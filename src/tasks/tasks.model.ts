@@ -2,7 +2,7 @@ import {Table,Column,Model,DataType,CreatedAt,UpdatedAt,ForeignKey,BelongsTo,} f
 import { Project } from 'src/projects/projects.model';
 
 @Table({ tableName: 'tasks' })
-export class Task extends Model<Task> {
+export class Task extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
