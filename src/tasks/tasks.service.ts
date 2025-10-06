@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException,BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Task } from './tasks.model';
 import { CreateTaskDto, UpdateTaskDto } from './tasks.dto';
@@ -28,6 +28,9 @@ export class TasksService {
   }
 
   async updateTask(projectId: number, taskId: number, updateTaskDto: UpdateTaskDto) {
+    if(!updateTaskDto){
+        throw new BadRequestException('No data has been provided for update');
+    }
     const task = await this.taskModel.findOne({ where: { id: taskId, projectId } });
     if (!task) throw new NotFoundException('Task not found.');
     return task.update(updateTaskDto);

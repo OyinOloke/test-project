@@ -11,11 +11,11 @@ export class CreateProjectDto {
 }
 
 export class UpdateProjectDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  description?: string;
+  description: string;
 }

@@ -17,14 +17,14 @@ export class CreateTaskDto {
 
 export class UpdateTaskDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   title: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   description: string;
 
   @IsEnum(['todo', 'in-progress', 'done'])
-  @IsNotEmpty()
+  @IsOptional()
   status: 'todo' | 'in-progress' | 'done';
 }
