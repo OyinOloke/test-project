@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './users/users.models';
 import { Task } from './tasks/tasks.model';
 import { Project } from './projects/projects.model';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/auth.middleware';
 
 @Module(
   {
@@ -31,6 +33,6 @@ import { Project } from './projects/projects.model';
      AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ],
+  providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard }],
 })
 export class AppModule {}

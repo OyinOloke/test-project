@@ -4,11 +4,11 @@ import { CreateTaskDto, UpdateTaskDto } from './tasks.dto';
 import { projectGuard } from '../projects/project.guard';
 
 @Controller('projects/:id/tasks')
+@UseGuards(projectGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  @UseGuards(projectGuard)
   async createTask(
     @Param('id') projectId: string,
     @Body() createTaskDto: CreateTaskDto,
@@ -17,13 +17,11 @@ export class TasksController {
   }
 
   @Get()
-  @UseGuards(projectGuard)
   async getTasks(@Param('id') projectId: string) {
     return this.tasksService.getTasksByProject(+projectId);
   }
 
   @Put(':taskId')
-  @UseGuards(projectGuard)
   async updateTask(
     @Param('id') projectId: string,
     @Param('taskId') taskId: string,
@@ -33,7 +31,6 @@ export class TasksController {
   }
 
   @Delete(':taskId')
-  @UseGuards(projectGuard)
   async deleteTask(
     @Param('id') projectId: string,
     @Param('taskId') taskId: string,
