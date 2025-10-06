@@ -2,7 +2,6 @@ import { Controller,Get, Body, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/users.dto';
 import { loginDTO } from './auth.dto';
-import { AuthGuard } from './auth.middleware';
 import{Public} from './auth.metadata'
 import * as bcrypt from 'bcrypt'
 
@@ -45,5 +44,4 @@ export class AuthController {
         response.token= userValidated.token
         return response
     }
-
 }

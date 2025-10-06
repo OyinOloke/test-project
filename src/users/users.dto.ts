@@ -27,21 +27,21 @@ export class FindUserDto{
 export class UpdateUserDto{
     @IsOptional()
     @IsNotEmpty()
-    lastname:string;
+    lastname?:string;
     @IsOptional()
     @IsNotEmpty()
-    firstName:string;
+    firstName?:string;
     @IsOptional()
     @IsNotEmpty()
     @IsEmail()
-    email:string;
+    email?:string;
     @IsOptional()
     @IsNotEmpty()
-    phoneNumber:string;
+    phoneNumber?:string;
     @IsOptional()
     @IsNotEmpty()
-    password:string;
+    password?:string;
     @IsOptional()
     @IsNotEmpty()
-    isActive:boolean;
+    isActive?:boolean;
 }
