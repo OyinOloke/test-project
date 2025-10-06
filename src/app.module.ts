@@ -8,7 +8,8 @@ import { TasksModule } from './tasks/tasks.module';
 import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
 import { User } from './users/users.models';
-
+import { Task } from './tasks/tasks.model';
+import { Project } from './projects/projects.model';
 
 @Module(
   {
@@ -22,7 +23,7 @@ import { User } from './users/users.models';
       database: process.env.DB_NAME,
       autoLoadModels:true,
       synchronize:true,
-      models:[User],
+      models:[User,Project,Task],
     }),
      UsersModule,
      TasksModule, 
@@ -30,6 +31,6 @@ import { User } from './users/users.models';
      AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ],
 })
 export class AppModule {}

@@ -19,7 +19,7 @@ export class User extends Model {
     @Column(DataType.STRING)
     declare password: string;
 
-    @HasMany(()=>Project, 'projectId')
+    @HasMany(()=>Project)
     declare projects: Project[];
 
     @Column({ type: DataType.BOOLEAN, defaultValue: true })
