@@ -13,12 +13,18 @@ export class TasksController {
     @Param('id') projectId: string,
     @Body() createTaskDto: CreateTaskDto,
   ) {
-    return this.tasksService.createTask(+projectId, createTaskDto);
+    const createdTask= await this.tasksService.createTask(+projectId, createTaskDto);
+    return {
+      message: "Project created",
+      content: createdTask
+    }
   }
 
   @Get()
   async getTasks(@Param('id') projectId: string) {
-    return this.tasksService.getTasksByProject(+projectId);
+    const GottenTask= await this.tasksService.getTasksByProject(+projectId);
+    return { message:"Tasks successfully found",
+      content: GottenTask}
   }
 
   @Put(':taskId')
@@ -27,7 +33,8 @@ export class TasksController {
     @Param('taskId') taskId: string,
     @Body() updateTaskDto: UpdateTaskDto,
   ) {
-    return this.tasksService.updateTask(+projectId, +taskId, updateTaskDto);
+    this.tasksService.updateTask(+projectId, +taskId, updateTaskDto);
+    return {message: "Task updated"}
   }
 
   @Delete(':taskId')
@@ -35,6 +42,7 @@ export class TasksController {
     @Param('id') projectId: string,
     @Param('taskId') taskId: string,
   ) {
-    return this.tasksService.deleteTask(+projectId, +taskId);
+     this.tasksService.deleteTask(+projectId, +taskId);
+     return {message: "Tasks are deleted"}
   }
 }

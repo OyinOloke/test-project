@@ -2,6 +2,8 @@ import {InferAttributes,DataTypes} from 'sequelize'
 import{Model,Column,Table,CreatedAt,HasMany, AutoIncrement, PrimaryKey, NotNull, BelongsTo, ForeignKey} from 'sequelize-typescript'
 import { User } from 'src/users/users.models';
 import { Task } from 'src/tasks/tasks.model';
+import { on } from 'events';
+import { Hooks } from 'sequelize/lib/hooks';
 
 @Table({tableName:'projects'})
 export class Project extends Model{
@@ -18,7 +20,7 @@ export class Project extends Model{
     @Column(DataTypes.STRING)
     declare description:string;
 
-    @HasMany(() => Task)
+    @HasMany(() => Task,{ onDelete:'CASCADE', hooks:true})
     declare tasks: Task[];
 
     @CreatedAt
@@ -26,7 +28,7 @@ export class Project extends Model{
     declare createdAt:Date;
 
     @ForeignKey(() => User)
-    @Column(DataTypes.INTEGER)
+    @Column({type:DataTypes.INTEGER,allowNull:false, onDelete:'CASCADE'})
     declare userId: number; 
 
     @BelongsTo(()=> User)

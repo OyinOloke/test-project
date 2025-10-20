@@ -2,7 +2,6 @@ import { Injectable, BadRequestException, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/sequelize';
 import { Project } from './projects.model';
 import { CreateProjectDto, UpdateProjectDto } from './projects.dto';
-import { BadRequestError } from 'openai';
 
 @Injectable()
 export class ProjectsService {

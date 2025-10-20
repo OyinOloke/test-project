@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService}  from 'src/users/users.service';
 import { CreateUserDto } from 'src/users/users.dto';
-import { loginDTO } from './auth.dto';
+import { LoginDTO } from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/users/users.models';
 import * as bcrypt from 'bcrypt'
 @Injectable()
 export class AuthService {
@@ -10,15 +11,18 @@ export class AuthService {
         private jwtservice: JwtService
     ){}
     
-    async SignUp(userData: CreateUserDto): Promise<boolean>{
-        const userCreated= await this.userService.createUser(userData);
-        if (!userCreated){
+    async SignUp(userData: CreateUserDto): Promise<boolean|User>{
+        const saltrounds=10
+        const hashPassword= await bcrypt.hash(userData.password,saltrounds)
+        userData.password= hashPassword
+        const CreatedUser= await this.userService.createUser(userData);
+        if (!CreatedUser){
             return false
         }
-        return true
+        return CreatedUser
 
     }
-    async validateUser(verifyData:loginDTO): Promise<any>
+    async validateUser(verifyData:LoginDTO): Promise<any>
     {
         const response= {
             status:false,
@@ -32,12 +36,10 @@ export class AuthService {
             return response
         }
 
-        const validatePassword= verifyData.password
         if(!user.password){
             response.message=  `Internal server error`
             return response
         }
-        const checkPassword=  user.password
         const isMatch = await bcrypt.compare(verifyData.password, user.password);
         if(isMatch){
             response.status=true
@@ -55,7 +57,7 @@ export class AuthService {
         }
         else{
             response.status= false
-            response.message=`Ivalid email or password as no match for from databse: ${checkPassword} and provided: ${validatePassword}`
+            response.message=`Ivalid email or password`
             return response
         }
     }
