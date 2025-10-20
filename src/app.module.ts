@@ -12,10 +12,14 @@ import { Task } from './tasks/tasks.model';
 import { Project } from './projects/projects.model';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.middleware';
-
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './common/response/response.interceptor'
+import { envValidationSchema } from 'src/config/env.validation';
 @Module(
   {
-  imports: [ConfigModule.forRoot({isGlobal:true}),
+  imports: [ConfigModule.forRoot({isGlobal:true,
+      validationSchema: envValidationSchema
+  }),
      SequelizeModule.forRoot({
       dialect:"postgres",
       host: process.env.DB_HOST,
@@ -33,6 +37,6 @@ import { AuthGuard } from './auth/auth.middleware';
      AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard }],
+  providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard },{provide: APP_INTERCEPTOR, useClass:ResponseInterceptor }],
 })
 export class AppModule {}

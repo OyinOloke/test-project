@@ -20,10 +20,10 @@ export class DeleteUserDto{
     @IsNotEmpty()
     id:number;
 }
-export class FindUserDto{
-    @IsNotEmpty()
-    id:number;
-}
+// export class FindUserDto{
+//     @IsNotEmpty()
+//     id:number;
+// }
 export class UpdateUserDto{
     @IsOptional()
     @IsNotEmpty()

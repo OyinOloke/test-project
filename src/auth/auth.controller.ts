@@ -1,7 +1,7 @@
-import { Controller,Get, Body, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller,Get, Body, Post, Request, UseGuards, InternalServerErrorException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/users.dto';
-import { loginDTO } from './auth.dto';
+import { LoginDTO } from './auth.dto';
 import{Public} from './auth.metadata'
 import * as bcrypt from 'bcrypt'
 
@@ -11,37 +11,24 @@ export class AuthController {
     @Public()
     @Post('signup')
     async createUser(@Body() userData: CreateUserDto){
-        const saltrounds=10
-        const hashPassword= await bcrypt.hash(userData.password,saltrounds)
-        userData.password= hashPassword
         const userCreated= await this.authService.SignUp(userData);
-        if(userCreated){
-            return "User created successfully"
+        if(userCreated==false){
+            return {message: "User creation failed"}
         }
-        else{
-            return "User creation failed"
-        }
-
+        return {message: "User creation successful", data: userCreated }
     }
     @Public()
     @Post('signin')
-    async signIn(@Body()verifyData:loginDTO): Promise<any>{
-        const response={
-        message: 'Invalid email or password',
-        error:'',
-        token: ''
-        }
+    async signIn(@Body()verifyData:LoginDTO): Promise<any>{
+
         const userValidated= await this.authService.validateUser(verifyData);
         if (!userValidated){
-            response.error='Error fetching user'
-            return response
+            throw new InternalServerErrorException ('Error fetching user')
         }
         if(userValidated.status== false){
-            response.error= userValidated.message
-            return response
+            const error= userValidated.message
+            throw new InternalServerErrorException (error)
         }
-        response.message='User validated successfully'
-        response.token= userValidated.token
-        return response
+        return {message: userValidated.message, content: userValidated.token}
     }
 }

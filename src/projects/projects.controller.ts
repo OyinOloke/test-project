@@ -21,14 +21,14 @@ export class ProjectsController {
   async getUserProjects(@Req() req) {
     const userId = req.user.sub;
     const projects = await this.projectsService.findProjectsByUser(userId);
-    return { projects: projects ?? [] };
+    return { message:" Projecs successfully found", content: projects ?? [] };
   }
 
   @UseGuards(projectGuard)
   @Get(':id')
   async getProjectById(@Param('id') id: number) {
     const project = await this.projectsService.findProjectById(id);
-    return project;
+    return {message:"Project found!", content: project};
   }
 
   @UseGuards(projectGuard)
@@ -38,13 +38,13 @@ export class ProjectsController {
     @Body() projectUpdate: UpdateProjectDto,
   ) {
     const updated = await this.projectsService.updateProject(id, projectUpdate);
-    return { success: updated };
+    return { message:"Project has been successfully updated", content: updated };
   }
 
   @UseGuards(projectGuard)
   @Delete(':id')
   async deleteProject(@Param('id') id: number) {
     const deleted = await this.projectsService.deleteProject(id);
-    return { success: deleted };
+    return { message: "Project has been deleted", content: deleted };
   }
 }
